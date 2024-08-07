@@ -1,7 +1,7 @@
 "use strict";
 
 const apiKey = "0ddba79c202945448d9175312240308";
-const days = 10;
+const daysQuantity = 10;
 
 let currentAmountOfDays = 5; // 5 || 7 || 10
 
@@ -20,7 +20,7 @@ const getForecastByGeolocation = function (position) {
     const { latitude, longitude } = position.coords;
     const geolocation = `${latitude},${longitude}`;
     const response = fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${geolocation}&days=${days}`
+      `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${geolocation}&days=${daysQuantity}`
     );
     resolve(response);
   });
