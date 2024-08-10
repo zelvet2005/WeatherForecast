@@ -1,16 +1,3 @@
-//days choice: 5 || 7 || 10
-
-/////////////////////////////////
-// day:
-// 1) date
-// 2) day { avgtemp_c; condition {icon}; }
-
-// activeDay:
-// 1) astro { sunrise; sunset }
-// 2) day { avghumidity; daily_chance_of_rain; daily_chance_of_snow;
-// maxtemp_c; mintemp_c; maxwind_kph; condition {text}; }
-// 3) hours { humidity; precip_mm; temp_c; wind_kph; condition {icon}; }
-
 import { DaysList } from "./daysList.js";
 import { ChosenDay } from "./chosenDay.js";
 
@@ -20,6 +7,7 @@ class WeatherApp {
   #region;
   #daysList;
   #chosenDay;
+
   constructor() {
     this.#getData();
   }
@@ -29,7 +17,10 @@ class WeatherApp {
       const responseWeather = await this.#getForecastByGeolocation(position);
       if (!responseWeather.ok) throw new Error("Fail to load weather forecast");
       const weather = await responseWeather.json();
-      console.log(weather); // temporary
+      const { name, country } = weather.location;
+      this.#region = `${name}, ${country}`;
+      this.#chosenDay = new ChosenDay(weather.forecast.forecastday[0]);
+      this.#daysList = new DaysList(weather.forecast.forecastday);
     } catch (error) {
       this.#displayError(error);
     }
@@ -63,7 +54,9 @@ class WeatherApp {
   #displayError(error) {
     console.error(error.message); // temporary
   }
-  #changeDisplayedDaysAmountHandler() {}
+  #changeDisplayedDaysAmountHandler() {
+    // 5 or 7 or 10
+  }
   #changeRegionHandler() {}
   #changeChosenDayHandler() {}
 }
