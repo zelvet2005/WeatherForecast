@@ -7,7 +7,21 @@
     <script src="weather.js" type="module"></script>
   </head>
   <body>
-    <header></header>
-    <main></main>
+    <header>
+      <h1 class="region-name">Region</h1>
+      <input class="region-input" type="text" />
+      <div class="change-displayed-days-btns">
+        <button>5</button>
+        <button>7</button>
+        <button>10</button>
+      </div>
+    </header>
+    <main>
+      <ul class="days-container"></ul>
+      <div class="today-forecast-container">
+        <div class="forecast-overview"></div>
+        <ul class="hours-container"></ul>
+      </div>
+    </main>
   </body>
 </html>
