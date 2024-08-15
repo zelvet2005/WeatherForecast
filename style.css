@@ -1,3 +1,30 @@
 * {
   margin: 0;
 }
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.change-displayed-days-btns,
+.region {
+  width: 100%;
+}
+
+.region {
+  display: flex;
+  justify-content: center;
+}
+
+.change-displayed-days-btns {
+  display: flex;
+  gap: 20%;
+  justify-content: center;
+  margin: 2% 0; /* temporary */
+}
+
+.region-name {
+  position: absolute;
+  left: 0;
+}
