@@ -3,11 +3,11 @@
 }
 
 header {
+  height: 3rem; /* temporary */
   display: flex;
   flex-wrap: wrap;
 }
 
-.change-displayed-days-btns,
 .region {
   width: 100%;
 }
@@ -17,14 +17,17 @@ header {
   justify-content: center;
 }
 
-.change-displayed-days-btns {
-  display: flex;
-  gap: 20%;
-  justify-content: center;
-  margin: 2% 0; /* temporary */
-}
-
 .region-name {
   position: absolute;
   left: 0;
+}
+
+.days-container {
+  height: 150px; /* temporary */
+}
+
+.day {
+  width: 70px; /* temporary */
+  min-height: 100px; /* temporary */
+  border: 1px solid black; /* temporary */
 }

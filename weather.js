@@ -3,13 +3,17 @@ import { ChosenDay } from "./chosenDay.js";
 
 class WeatherApp {
   #apiKey = "0ddba79c202945448d9175312240308";
-  #maxDaysQuantity = 10;
+  #daysQuantity = 3;
   #region;
   #daysList;
   #chosenDay;
 
   constructor() {
     this.#getData();
+
+    setTimeout(() => {
+      console.log(this.#daysList);
+    }, 800);
   }
   async #getData() {
     try {
@@ -43,7 +47,7 @@ class WeatherApp {
       const response = fetch(
         `http://api.weatherapi.com/v1/forecast.json?key=${
           self.#apiKey
-        }&q=${geolocation}&days=${self.#maxDaysQuantity}`
+        }&q=${geolocation}&days=${self.#daysQuantity}`
       );
       resolve(response);
     });
@@ -53,9 +57,6 @@ class WeatherApp {
   #displayChosenDay() {}
   #displayError(error) {
     console.error(error.message); // temporary
-  }
-  #changeDisplayedDaysAmountHandler() {
-    // 5 or 7 or 10
   }
   #changeRegionHandler() {}
   #changeChosenDayHandler() {}

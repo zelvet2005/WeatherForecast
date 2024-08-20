@@ -14,7 +14,7 @@ export class DaysList {
         },
         day: {
           avgTemp: dayForecast.day.avgtemp_c,
-          conditionIcon: dayForecast.day.condition.icon,
+          condition: dayForecast.day.condition,
         },
       };
     });
