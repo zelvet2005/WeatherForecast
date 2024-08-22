@@ -28,7 +28,7 @@ export class ChosenDay {
         precip: hour.precip_mm,
         temp: hour.temp_c,
         wind: hour.wind_kph,
-        conditionIcon: hour.condition.icon,
+        condition: hour.condition,
       };
     });
   }
@@ -36,3 +36,24 @@ export class ChosenDay {
   createHourElement() {}
   displayHours() {}
 }
+
+/* <p class="sunrise">Sunrise: 6:00 AM</p>
+          <p class="sunset">Sunset: 9:00 PM</p>
+          <p class="avg-humidity">Average Humidity: 30</p>
+          <p class="condition-text">Condition: Partly Cloudy</p>
+          <p class="chance-rain">Daily chance of rain: 0 %</p>
+          <p class="chance-snow">Daily chance of snow: 0 %</p>
+          <p class="max-temp">Max temperature: 31°C</p>
+          <p class="min-temp">Min temperature: 20°C</p>
+          <p class="max-wind">Max wind: 25 kph</p> */
+
+/* <div class="hour">
+            <img
+              src="//cdn.weatherapi.com/weather/64x64/night/113.png"
+              alt="Clear"
+            />
+            <p class="humidity">Humidity: 25</p>
+            <p class="precipitation">Precipitation: 0 mm</p>
+            <p class="temperature">Temperature: 23°C</p>
+            <p class="wind">Wind: 6 kph</p>
+          </div> */

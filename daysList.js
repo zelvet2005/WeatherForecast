@@ -22,3 +22,10 @@ export class DaysList {
   createDayElement() {}
   displayDays() {}
 }
+
+/* <div class="day">
+  <p class="name">Mon</p>
+  <p class="day-month">20 Aug</p>
+  <img src="//cdn.weatherapi.com/weather/64x64/day/113.png" alt="Sunny" />
+  <p class="avg-temp">28.5°C</p>
+</div> */

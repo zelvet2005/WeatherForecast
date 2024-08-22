@@ -31,3 +31,17 @@ header {
   min-height: 100px; /* temporary */
   border: 1px solid black; /* temporary */
 }
+
+.today-forecast-container {
+  width: 95%; /* temporary */
+  padding: 10px; /* temporary */
+  margin: 0 auto; /* temporary */
+  min-height: 300px; /* temporary */
+  border: 1px solid black; /* temporary */
+}
+
+.hour {
+  width: 90px; /* temporary */
+  min-height: 100px; /* temporary */
+  border: 1px solid black; /* temporary */
+}

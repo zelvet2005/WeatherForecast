@@ -11,9 +11,9 @@ class WeatherApp {
   constructor() {
     this.#getData();
 
-    setTimeout(() => {
-      console.log(this.#daysList);
-    }, 800);
+    // setTimeout(() => {
+    //   console.log(this.#chosenDay);
+    // }, 800);
   }
   async #getData() {
     try {
