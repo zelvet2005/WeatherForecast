@@ -9,11 +9,11 @@ class WeatherApp {
   #chosenDay;
 
   constructor() {
-    this.#getData();
-
-    // setTimeout(() => {
-    //   console.log(this.#chosenDay);
-    // }, 800);
+    this.#getData().then(() => {
+      console.log(this.#chosenDay);
+      console.log(this.#region);
+      console.log(this.#daysList);
+    });
   }
   async #getData() {
     try {

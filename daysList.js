@@ -19,13 +19,15 @@ export class DaysList {
       };
     });
   }
-  createDayElement() {}
+  #createDayElement(dayObj) {
+    return `
+      <div class="day">
+        <p class="name">${dayObj.dayName}</p>
+        <p class="day-month">${dayObj.dayAndMonth}</p>
+        <img src="${dayObj.day.condition.icon}" alt="${dayObj.day.condition.text}" />
+        <p class="avg-temp">${dayObj.day.avgTemp}</p>
+      </div>
+    `;
+  }
   displayDays() {}
 }
-
-/* <div class="day">
-  <p class="name">Mon</p>
-  <p class="day-month">20 Aug</p>
-  <img src="//cdn.weatherapi.com/weather/64x64/day/113.png" alt="Sunny" />
-  <p class="avg-temp">28.5°C</p>
-</div> */
