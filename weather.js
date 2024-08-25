@@ -1,6 +1,11 @@
 import { DaysList } from "./daysList.js";
 import { ChosenDay } from "./chosenDay.js";
 
+const daysContainer = document.querySelector(".days-container");
+const forecastOverviewContainer = document.querySelector(".forecast-overview");
+const hoursContainer = document.querySelector(".hours-container");
+const regionContainer = document.querySelector(".region-name");
+
 class WeatherApp {
   #apiKey = "0ddba79c202945448d9175312240308";
   #daysQuantity = 3;
@@ -13,8 +18,13 @@ class WeatherApp {
       console.log(this.#chosenDay);
       console.log(this.#region);
       console.log(this.#daysList);
+
+      this.#displayRegion();
+      this.#displayDaysList();
+      this.#displayChosenDay();
     });
   }
+
   async #getData() {
     try {
       const position = await this.#getCurrentGeolocation();
@@ -52,9 +62,16 @@ class WeatherApp {
       resolve(response);
     });
   }
-  #displayRegion() {}
-  #displayDaysList() {}
-  #displayChosenDay() {}
+  #displayRegion() {
+    regionContainer.textContent = this.#region;
+  }
+  #displayDaysList() {
+    this.#daysList.displayDays(daysContainer);
+  }
+  #displayChosenDay() {
+    this.#chosenDay.displayForecast(forecastOverviewContainer);
+    this.#chosenDay.displayHours(hoursContainer);
+  }
   #displayError(error) {
     console.error(error.message); // temporary
   }

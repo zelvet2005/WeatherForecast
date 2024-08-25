@@ -23,7 +23,13 @@ header {
 }
 
 .days-container {
+  display: flex; /* temporary */
   height: 150px; /* temporary */
+}
+
+.hours-container {
+  display: flex; /* temporary */
+  flex-wrap: wrap; /* temporary */
 }
 
 .day {

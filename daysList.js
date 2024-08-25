@@ -2,9 +2,10 @@ export class DaysList {
   daysList;
 
   constructor(daysList) {
-    this.parseDaysList(daysList);
+    this.#parseDaysList(daysList);
   }
-  parseDaysList(daysList) {
+
+  #parseDaysList(daysList) {
     this.daysList = daysList.map((dayForecast) => {
       const date = new Date(dayForecast.date).toDateString().split(" ");
       return {
@@ -22,12 +23,17 @@ export class DaysList {
   #createDayElement(dayObj) {
     return `
       <div class="day">
-        <p class="name">${dayObj.dayName}</p>
-        <p class="day-month">${dayObj.dayAndMonth}</p>
+        <p class="name">${dayObj.date.dayName}</p>
+        <p class="day-month">${dayObj.date.dayAndMonth}</p>
         <img src="${dayObj.day.condition.icon}" alt="${dayObj.day.condition.text}" />
         <p class="avg-temp">${dayObj.day.avgTemp}</p>
       </div>
     `;
   }
-  displayDays() {}
+  displayDays(container) {
+    this.daysList.forEach((day) => {
+      const dayElement = this.#createDayElement(day);
+      container.insertAdjacentHTML("beforeend", dayElement);
+    });
+  }
 }
