@@ -9,19 +9,27 @@ const regionContainer = document.querySelector(".region-name");
 class WeatherApp {
   #apiKey = "0ddba79c202945448d9175312240308";
   #daysQuantity = 3;
+  #currDay = 0;
+
+  #weather;
   #region;
   #daysList;
   #chosenDay;
 
   constructor() {
     this.#getData().then(() => {
-      console.log(this.#chosenDay);
-      console.log(this.#region);
-      console.log(this.#daysList);
+      // console.log(this.#chosenDay);
+      // console.log(this.#region);
+      // console.log(this.#daysList);
 
       this.#displayRegion();
       this.#displayDaysList();
       this.#displayChosenDay();
+
+      daysContainer.addEventListener(
+        "click",
+        this.#changeChosenDayHandler.bind(this)
+      );
     });
   }
 
@@ -33,8 +41,9 @@ class WeatherApp {
       const weather = await responseWeather.json();
       const { name, country } = weather.location;
       this.#region = `${name}, ${country}`;
-      this.#chosenDay = new ChosenDay(weather.forecast.forecastday[0]);
-      this.#daysList = new DaysList(weather.forecast.forecastday);
+      this.#weather = weather.forecast.forecastday;
+      this.#chosenDay = new ChosenDay(this.#weather[0]);
+      this.#daysList = new DaysList(this.#weather);
     } catch (error) {
       this.#displayError(error);
     }
@@ -76,7 +85,22 @@ class WeatherApp {
     console.error(error.message); // temporary
   }
   #changeRegionHandler() {}
-  #changeChosenDayHandler() {}
+  #changeChosenDayHandler(event) {
+    const clickedDay = event.target.closest(".day");
+    if (clickedDay && !clickedDay.classList.contains("chosen")) {
+      daysContainer
+        .querySelector(`[data-number="${this.#currDay}"]`)
+        .classList.remove("chosen");
+      clickedDay.classList.add("chosen");
+      this.#currDay = clickedDay.dataset.number;
+
+      forecastOverviewContainer.innerHTML = "";
+      hoursContainer.innerHTML = "";
+
+      this.#chosenDay.setChosenDay(this.#weather[this.#currDay]);
+      this.#displayChosenDay();
+    }
+  }
 }
 
 const app = new WeatherApp();

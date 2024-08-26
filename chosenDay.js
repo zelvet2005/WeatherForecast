@@ -3,10 +3,10 @@ export class ChosenDay {
   hoursList;
 
   constructor(chosenDay) {
-    this.#parseChosenDay(chosenDay);
+    this.setChosenDay(chosenDay);
   }
 
-  #parseChosenDay(chosenDay) {
+  setChosenDay(chosenDay) {
     const dayForecast = chosenDay.day;
     this.chosenDay = {
       astro: {

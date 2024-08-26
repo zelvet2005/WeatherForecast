@@ -2,10 +2,10 @@ export class DaysList {
   daysList;
 
   constructor(daysList) {
-    this.#parseDaysList(daysList);
+    this.#setDaysList(daysList);
   }
 
-  #parseDaysList(daysList) {
+  #setDaysList(daysList) {
     this.daysList = daysList.map((dayForecast) => {
       const date = new Date(dayForecast.date).toDateString().split(" ");
       return {
@@ -20,19 +20,24 @@ export class DaysList {
       };
     });
   }
-  #createDayElement(dayObj) {
+  #createDayElement(dayObj, index, isFirst = false) {
     return `
-      <div class="day">
+      <div class="day ${isFirst ? "chosen" : ""}" data-number=${index}>
         <p class="name">${dayObj.date.dayName}</p>
         <p class="day-month">${dayObj.date.dayAndMonth}</p>
-        <img src="${dayObj.day.condition.icon}" alt="${dayObj.day.condition.text}" />
+        <img src="${dayObj.day.condition.icon}" alt="${
+      dayObj.day.condition.text
+    }" />
         <p class="avg-temp">${dayObj.day.avgTemp}</p>
       </div>
     `;
   }
   displayDays(container) {
-    this.daysList.forEach((day) => {
-      const dayElement = this.#createDayElement(day);
+    this.daysList.forEach((day, index) => {
+      const dayElement =
+        index === 0
+          ? this.#createDayElement(day, index, true)
+          : this.#createDayElement(day, index);
       container.insertAdjacentHTML("beforeend", dayElement);
     });
   }

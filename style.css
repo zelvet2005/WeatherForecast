@@ -51,3 +51,7 @@ header {
   min-height: 100px; /* temporary */
   border: 1px solid black; /* temporary */
 }
+
+.chosen {
+  border: 2px solid blue; /* temporary */
+}
