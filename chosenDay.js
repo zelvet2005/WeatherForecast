@@ -35,6 +35,7 @@ export class ChosenDay {
     });
   }
   displayForecast(container) {
+    container.innerHTML = "";
     const forecastElement = `
       <p class="sunrise">Sunrise: ${this.chosenDay.astro.sunrise}</p>
       <p class="sunset">Sunset: ${this.chosenDay.astro.sunset}</p>
@@ -67,6 +68,7 @@ export class ChosenDay {
     `;
   }
   displayHours(container) {
+    container.innerHTML = "";
     this.hoursList.forEach((hour) => {
       const hourElement = this.#createHourElement(hour);
       container.insertAdjacentHTML("beforeend", hourElement);

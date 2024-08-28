@@ -33,6 +33,7 @@ export class DaysList {
     `;
   }
   displayDays(container) {
+    container.innerHTML = "";
     this.daysList.forEach((day, index) => {
       const dayElement =
         index === 0

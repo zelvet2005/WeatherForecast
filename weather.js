@@ -6,6 +6,9 @@ const forecastOverviewContainer = document.querySelector(".forecast-overview");
 const hoursContainer = document.querySelector(".hours-container");
 const regionContainer = document.querySelector(".region-name");
 
+const form = document.querySelector(".form");
+const regionInput = document.querySelector(".region-input");
+
 class WeatherApp {
   #apiKey = "0ddba79c202945448d9175312240308";
   #daysQuantity = 3;
@@ -18,18 +21,13 @@ class WeatherApp {
 
   constructor() {
     this.#getData().then(() => {
-      // console.log(this.#chosenDay);
-      // console.log(this.#region);
-      // console.log(this.#daysList);
-
-      this.#displayRegion();
-      this.#displayDaysList();
-      this.#displayChosenDay();
+      this.#updateUI();
 
       daysContainer.addEventListener(
         "click",
         this.#changeChosenDayHandler.bind(this)
       );
+      form.addEventListener("submit", this.#changeRegionHandler.bind(this));
     });
   }
 
@@ -39,14 +37,22 @@ class WeatherApp {
       const responseWeather = await this.#getForecastByGeolocation(position);
       if (!responseWeather.ok) throw new Error("Fail to load weather forecast");
       const weather = await responseWeather.json();
-      const { name, country } = weather.location;
-      this.#region = `${name}, ${country}`;
-      this.#weather = weather.forecast.forecastday;
-      this.#chosenDay = new ChosenDay(this.#weather[0]);
-      this.#daysList = new DaysList(this.#weather);
+      this.#setWeatherVariables(weather);
     } catch (error) {
       this.#displayError(error);
     }
+  }
+  #setWeatherVariables(weatherObj) {
+    const { name, country } = weatherObj.location;
+    this.#region = `${name}, ${country}`;
+    this.#weather = weatherObj.forecast.forecastday;
+    this.#chosenDay = new ChosenDay(this.#weather[0]);
+    this.#daysList = new DaysList(this.#weather);
+  }
+  #updateUI() {
+    this.#displayRegion();
+    this.#displayDaysList();
+    this.#displayChosenDay();
   }
   #getCurrentGeolocation() {
     return new Promise(function (resolve, reject) {
@@ -84,7 +90,25 @@ class WeatherApp {
   #displayError(error) {
     console.error(error.message); // temporary
   }
-  #changeRegionHandler() {}
+  async #changeRegionHandler(event) {
+    event.preventDefault();
+    const cityName = regionInput.value;
+    regionInput.value = "";
+    try {
+      const responseWeather = await (
+        await fetch(
+          `http://api.weatherapi.com/v1/forecast.json?key=${
+            this.#apiKey
+          }&q=${cityName}&days=${this.#daysQuantity}`
+        )
+      ).json();
+      if (responseWeather.error) throw new Error("Invalid city name");
+      this.#setWeatherVariables(responseWeather);
+      this.#updateUI();
+    } catch (error) {
+      this.#displayError(error);
+    }
+  }
   #changeChosenDayHandler(event) {
     const clickedDay = event.target.closest(".day");
     if (clickedDay && !clickedDay.classList.contains("chosen")) {
@@ -104,3 +128,5 @@ class WeatherApp {
 }
 
 const app = new WeatherApp();
+
+// there is a bug during changing region in daysList displaying
