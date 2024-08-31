@@ -55,3 +55,23 @@ header {
 .chosen {
   border: 2px solid blue; /* temporary */
 }
+
+.error {
+  width: 300px; /* temporary */
+  height: 100px; /* temporary */
+  background-color: lightgray; /* temporary */
+  position: absolute; /* temporary */
+  top: 0; /* temporary */
+  left: 42%; /* temporary */
+  border: 1px solid black; /* temporary */
+}
+
+.error-btn {
+  position: absolute; /* temporary */
+  bottom: 0; /* temporary */
+  right: 0; /* temporary */
+}
+
+.hidden {
+  display: none;
+}

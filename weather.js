@@ -5,7 +5,9 @@ const daysContainer = document.querySelector(".days-container");
 const forecastOverviewContainer = document.querySelector(".forecast-overview");
 const hoursContainer = document.querySelector(".hours-container");
 const regionContainer = document.querySelector(".region-name");
-
+const errorContainer = document.querySelector(".error");
+const errorMessage = document.querySelector(".error-message");
+const errorBtn = document.querySelector(".error-btn");
 const form = document.querySelector(".form");
 const regionInput = document.querySelector(".region-input");
 
@@ -28,6 +30,7 @@ class WeatherApp {
         this.#changeChosenDayHandler.bind(this)
       );
       form.addEventListener("submit", this.#changeRegionHandler.bind(this));
+      errorBtn.addEventListener("click", this.#closeErrorWindowHandler);
     });
   }
 
@@ -88,7 +91,8 @@ class WeatherApp {
     this.#chosenDay.displayHours(hoursContainer);
   }
   #displayError(error) {
-    console.error(error.message); // temporary
+    errorMessage.textContent = error.message;
+    errorContainer.classList.remove("hidden");
   }
   async #changeRegionHandler(event) {
     event.preventDefault();
@@ -105,6 +109,7 @@ class WeatherApp {
       if (responseWeather.error) throw new Error("Invalid city name");
       this.#setWeatherVariables(responseWeather);
       this.#updateUI();
+      this.#currDay = 0;
     } catch (error) {
       this.#displayError(error);
     }
@@ -125,8 +130,9 @@ class WeatherApp {
       this.#displayChosenDay();
     }
   }
+  #closeErrorWindowHandler() {
+    errorContainer.classList.add("hidden");
+  }
 }
 
 const app = new WeatherApp();
-
-// there is a bug during changing region in daysList displaying
