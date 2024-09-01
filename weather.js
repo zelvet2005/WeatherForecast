@@ -98,6 +98,7 @@ class WeatherApp {
     event.preventDefault();
     const cityName = regionInput.value;
     regionInput.value = "";
+    regionInput.blur();
     try {
       const responseWeather = await (
         await fetch(

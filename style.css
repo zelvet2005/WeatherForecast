@@ -2,17 +2,39 @@
   margin: 0;
 }
 
-header {
-  height: 3rem; /* temporary */
+body {
+  background: linear-gradient(to right, rgb(56, 149, 210), rgb(35, 135, 202));
+  color: white;
+}
+
+input {
+  all: unset;
+  box-sizing: border-box;
+  color: black;
+  background-color: white;
+  width: 22rem;
+  height: 1.5rem;
+  border-radius: 0.5rem;
+  padding: 0.2rem;
+  transition: 0.2s;
+}
+
+input:focus,
+input:hover {
+  background-color: rgb(241, 241, 241);
+}
+
+form {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+}
+
+header {
+  height: 5rem;
 }
 
 .region {
-  width: 100%;
-}
-
-.region {
+  height: 50%;
   display: flex;
   justify-content: center;
 }
@@ -23,37 +45,44 @@ header {
 }
 
 .days-container {
-  display: flex; /* temporary */
-  height: 150px; /* temporary */
+  display: flex;
+  padding: 0;
+  height: 10rem;
+  justify-content: center;
 }
 
 .hours-container {
-  display: flex; /* temporary */
-  flex-wrap: wrap; /* temporary */
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .day {
-  width: 70px; /* temporary */
-  min-height: 100px; /* temporary */
-  border: 1px solid black; /* temporary */
+  text-align: center;
+  width: 5rem;
+  height: 8rem;
+  border: 1px solid white;
 }
 
 .today-forecast-container {
-  width: 95%; /* temporary */
-  padding: 10px; /* temporary */
-  margin: 0 auto; /* temporary */
-  min-height: 300px; /* temporary */
-  border: 1px solid black; /* temporary */
+  width: 90rem;
+  height: 40rem;
+  padding: 0.5rem;
+  margin: 1rem auto;
+  border: 1px solid white;
+}
+
+.forecast-overview {
+  margin-bottom: 1.5rem;
 }
 
 .hour {
-  width: 90px; /* temporary */
-  min-height: 100px; /* temporary */
-  border: 1px solid black; /* temporary */
+  width: 7rem;
+  height: 12.5rem;
+  border: 1px solid white;
 }
 
 .chosen {
-  border: 2px solid blue; /* temporary */
+  border: 2px solid rgb(255, 247, 5);
 }
 
 .error {
