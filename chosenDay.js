@@ -39,7 +39,7 @@ export class ChosenDay {
     const forecastElement = `
       <p class="sunrise">Sunrise: ${this.chosenDay.astro.sunrise}</p>
       <p class="sunset">Sunset: ${this.chosenDay.astro.sunset}</p>
-      <p class="avg-humidity">Average Humidity: ${this.chosenDay.dayForecast.avghumidity}</p>
+      <p class="avg-humidity">Average Humidity: ${this.chosenDay.dayForecast.avghumidity} %</p>
       <p class="condition-text">Condition: ${this.chosenDay.dayForecast.condition}</p>
       <p class="chance-rain">Daily chance of rain: ${this.chosenDay.dayForecast.dailyChanceOfRain} %</p>
       <p class="chance-snow">Daily chance of snow: ${this.chosenDay.dayForecast.dailyChanceOfSnow} %</p>
@@ -53,14 +53,14 @@ export class ChosenDay {
   #createHourElement(hourObj) {
     return `
       <div class="hour">
-        <p class="currHour">${
+        <p class="curr-hour">${
           hourObj.currHour < 10 ? "0" + hourObj.currHour : hourObj.currHour
         }:00</p>
         <img
           src="${hourObj.condition.icon}"
           alt="${hourObj.condition.text}"
         />
-        <p class="humidity">Humidity: ${hourObj.humidity}</p>
+        <p class="humidity">Humidity: ${hourObj.humidity} %</p>
         <p class="precipitation">Precipitation: ${hourObj.precip} mm</p>
         <p class="temperature">Temperature: ${hourObj.temp}°C</p>
         <p class="wind">Wind: ${hourObj.wind} kph</p>

@@ -28,7 +28,7 @@ export class DaysList {
         <img src="${dayObj.day.condition.icon}" alt="${
       dayObj.day.condition.text
     }" />
-        <p class="avg-temp">${dayObj.day.avgTemp}</p>
+        <p class="avg-temp">${dayObj.day.avgTemp}°C</p>
       </div>
     `;
   }

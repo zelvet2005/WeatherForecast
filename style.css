@@ -41,7 +41,8 @@ header {
 
 .region-name {
   position: absolute;
-  left: 0;
+  left: 0.2rem;
+  top: 0.1rem;
 }
 
 .days-container {
@@ -49,6 +50,7 @@ header {
   padding: 0;
   height: 10rem;
   justify-content: center;
+  gap: 0.3rem;
 }
 
 .hours-container {
@@ -60,25 +62,40 @@ header {
   text-align: center;
   width: 5rem;
   height: 8rem;
-  border: 1px solid white;
+  border: 2px solid white;
+  border-radius: 1rem;
+  transition: 0.2s;
 }
 
 .today-forecast-container {
   width: 90rem;
-  height: 40rem;
+  min-height: 40rem;
   padding: 0.5rem;
   margin: 1rem auto;
-  border: 1px solid white;
+  border: 2px solid white;
+  border-radius: 1rem;
 }
 
 .forecast-overview {
   margin-bottom: 1.5rem;
+  font-size: 1.3rem;
 }
 
 .hour {
-  width: 7rem;
-  height: 12.5rem;
+  width: 8.5rem;
+  height: 10.5rem;
   border: 1px solid white;
+  padding: 0.2rem;
+}
+
+.hour .curr-hour {
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.hour img {
+  display: block;
+  margin: 0 auto;
 }
 
 .chosen {
