@@ -73,7 +73,7 @@ class WeatherApp {
       const { latitude, longitude } = position.coords;
       const geolocation = `${latitude},${longitude}`;
       const response = fetch(
-        `http://api.weatherapi.com/v1/forecast.json?key=${
+        `https://api.weatherapi.com/v1/forecast.json?key=${
           self.#apiKey
         }&q=${geolocation}&days=${self.#daysQuantity}`
       );
@@ -102,7 +102,7 @@ class WeatherApp {
     try {
       const responseWeather = await (
         await fetch(
-          `http://api.weatherapi.com/v1/forecast.json?key=${
+          `https://api.weatherapi.com/v1/forecast.json?key=${
             this.#apiKey
           }&q=${cityName}&days=${this.#daysQuantity}`
         )
