@@ -96,6 +96,7 @@ class WeatherApp {
   }
   async #changeRegionHandler(event) {
     event.preventDefault();
+    this.#closeErrorWindowHandler();
     const cityName = regionInput.value;
     regionInput.value = "";
     regionInput.blur();
@@ -116,6 +117,7 @@ class WeatherApp {
     }
   }
   #changeChosenDayHandler(event) {
+    this.#closeErrorWindowHandler();
     const clickedDay = event.target.closest(".day");
     if (clickedDay && !clickedDay.classList.contains("chosen")) {
       daysContainer
