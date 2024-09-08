@@ -92,7 +92,9 @@ class WeatherApp {
   }
   #displayError(error) {
     errorMessage.textContent = error.message;
+    errorContainer.classList.remove("none");
     errorContainer.classList.remove("hidden");
+    errorContainer.classList.add("not-hidden");
   }
   async #changeRegionHandler(event) {
     event.preventDefault();
@@ -134,6 +136,7 @@ class WeatherApp {
     }
   }
   #closeErrorWindowHandler() {
+    errorContainer.classList.remove("not-hidden");
     errorContainer.classList.add("hidden");
   }
 }

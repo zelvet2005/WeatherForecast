@@ -118,9 +118,7 @@ header {
   top: -7rem;
   right: 0;
   border: 1px solid black;
-  animation-name: descent;
-  animation-duration: 0.3s;
-  animation-fill-mode: forwards;
+  will-change: top;
 }
 
 .error-btn {
@@ -139,8 +137,18 @@ header {
   background-color: rgb(151, 213, 255);
 }
 
+.none {
+  display: none;
+}
+
 .hidden {
   animation-name: ascent;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+}
+
+.not-hidden {
+  animation-name: descent;
   animation-duration: 0.3s;
   animation-fill-mode: forwards;
 }
@@ -150,6 +158,9 @@ header {
 }
 
 @keyframes descent {
+  from {
+    top: -7rem;
+  }
   to {
     top: 0;
   }
