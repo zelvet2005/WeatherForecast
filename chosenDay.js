@@ -50,9 +50,9 @@ export class ChosenDay {
 
     container.insertAdjacentHTML("afterbegin", forecastElement);
   }
-  #createHourElement(hourObj) {
+  #createHourElement(hourObj, isPast) {
     return `
-      <div class="hour">
+      <div class="hour ${isPast ? "past" : ""}">
         <p class="curr-hour">${
           hourObj.currHour < 10 ? "0" + hourObj.currHour : hourObj.currHour
         }:00</p>
@@ -68,9 +68,11 @@ export class ChosenDay {
     `;
   }
   displayHours(container) {
+    const currTime = new Date().getHours();
     container.innerHTML = "";
     this.hoursList.forEach((hour) => {
-      const hourElement = this.#createHourElement(hour);
+      const isPast = hour.currHour >= currTime ? false : true;
+      const hourElement = this.#createHourElement(hour, isPast);
       container.insertAdjacentHTML("beforeend", hourElement);
     });
   }

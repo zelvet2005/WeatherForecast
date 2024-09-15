@@ -12,9 +12,10 @@ input {
   box-sizing: border-box;
   color: black;
   background-color: white;
-  width: 22rem;
-  height: 1.5rem;
-  border-radius: 0.5rem;
+  width: 35rem;
+  height: 1.85rem;
+  font-size: 1.05rem;
+  border-radius: 0.7rem;
   padding: 0.2rem;
   transition: 0.2s;
 }
@@ -26,7 +27,7 @@ input:hover {
 
 form {
   display: flex;
-  align-items: center;
+  align-items: end;
 }
 
 header {
@@ -35,6 +36,7 @@ header {
 
 .region {
   height: 50%;
+  margin-top: 2.3rem;
   display: flex;
   justify-content: center;
 }
@@ -151,6 +153,11 @@ header {
   animation-name: descent;
   animation-duration: 0.3s;
   animation-fill-mode: forwards;
+}
+
+.past {
+  border: 2px solid rgb(200, 200, 200);
+  color: rgb(200, 200, 200);
 }
 
 .cross {
