@@ -28,6 +28,7 @@ input:hover {
 form {
   display: flex;
   align-items: end;
+  gap: 0.2rem;
 }
 
 header {
@@ -45,6 +46,27 @@ header {
   position: absolute;
   left: 0.2rem;
   top: 0.1rem;
+}
+
+.region-btn {
+  all: unset;
+  height: 1.85rem;
+  width: 1.85rem;
+  border-radius: 0.7rem;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s;
+}
+
+.region-btn:hover {
+  background-color: rgb(241, 241, 241);
+}
+
+.region-btn img {
+  width: 70%;
+  height: 70%;
 }
 
 .days-container {
