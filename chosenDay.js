@@ -1,9 +1,11 @@
 export class ChosenDay {
   chosenDay;
   hoursList;
+  index;
 
-  constructor(chosenDay) {
+  constructor(chosenDay, index) {
     this.setChosenDay(chosenDay);
+    this.index = index;
   }
 
   setChosenDay(chosenDay) {
@@ -68,10 +70,11 @@ export class ChosenDay {
     `;
   }
   displayHours(container) {
+    console.log(this.index);
     const currTime = new Date().getHours();
     container.innerHTML = "";
     this.hoursList.forEach((hour) => {
-      const isPast = hour.currHour >= currTime ? false : true;
+      const isPast = Number(this.index) === 0 && currTime > hour.currHour;
       const hourElement = this.#createHourElement(hour, isPast);
       container.insertAdjacentHTML("beforeend", hourElement);
     });

@@ -49,7 +49,7 @@ class WeatherApp {
     const { name, country } = weatherObj.location;
     this.#region = `${name}, ${country}`;
     this.#weather = weatherObj.forecast.forecastday;
-    this.#chosenDay = new ChosenDay(this.#weather[0]);
+    this.#chosenDay = new ChosenDay(this.#weather[0], 0);
     this.#daysList = new DaysList(this.#weather);
   }
   #updateUI() {
@@ -132,6 +132,7 @@ class WeatherApp {
       hoursContainer.innerHTML = "";
 
       this.#chosenDay.setChosenDay(this.#weather[this.#currDay]);
+      this.#chosenDay.index = this.#currDay;
       this.#displayChosenDay();
     }
   }
