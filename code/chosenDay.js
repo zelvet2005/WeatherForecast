@@ -1,16 +1,19 @@
 export class ChosenDay {
-  chosenDay;
+  generalForecast;
   hoursList;
-  index;
+  isToday;
 
   constructor(chosenDay, index) {
-    this.setChosenDay(chosenDay);
-    this.index = index;
+    this.setChosenDayVariables(chosenDay);
+    this.isThisDayToday(index);
   }
 
-  setChosenDay(chosenDay) {
+  isThisDayToday(index) {
+    this.isToday = +index === 0;
+  }
+  setChosenDayVariables(chosenDay) {
     const dayForecast = chosenDay.day;
-    this.chosenDay = {
+    this.generalForecast = {
       astro: {
         sunrise: chosenDay.astro.sunrise,
         sunset: chosenDay.astro.sunset,
@@ -36,18 +39,18 @@ export class ChosenDay {
       };
     });
   }
-  displayForecast(container) {
+  displayGeneralForecast(container) {
     container.innerHTML = "";
     const forecastElement = `
-      <p class="sunrise">Sunrise: ${this.chosenDay.astro.sunrise}</p>
-      <p class="sunset">Sunset: ${this.chosenDay.astro.sunset}</p>
-      <p class="avg-humidity">Average Humidity: ${this.chosenDay.dayForecast.avghumidity} %</p>
-      <p class="condition-text">Condition: ${this.chosenDay.dayForecast.condition}</p>
-      <p class="chance-rain">Daily chance of rain: ${this.chosenDay.dayForecast.dailyChanceOfRain} %</p>
-      <p class="chance-snow">Daily chance of snow: ${this.chosenDay.dayForecast.dailyChanceOfSnow} %</p>
-      <p class="max-temp">Max temperature: ${this.chosenDay.dayForecast.maxTemp}°C</p>
-      <p class="min-temp">Min temperature: ${this.chosenDay.dayForecast.minTemp}°C</p>
-      <p class="max-wind">Max wind: ${this.chosenDay.dayForecast.maxWind} kph</p>
+      <p class="sunrise">Sunrise: ${this.generalForecast.astro.sunrise}</p>
+      <p class="sunset">Sunset: ${this.generalForecast.astro.sunset}</p>
+      <p class="avg-humidity">Average Humidity: ${this.generalForecast.dayForecast.avghumidity} %</p>
+      <p class="condition-text">Condition: ${this.generalForecast.dayForecast.condition}</p>
+      <p class="chance-rain">Daily chance of rain: ${this.generalForecast.dayForecast.dailyChanceOfRain} %</p>
+      <p class="chance-snow">Daily chance of snow: ${this.generalForecast.dayForecast.dailyChanceOfSnow} %</p>
+      <p class="max-temp">Max temperature: ${this.generalForecast.dayForecast.maxTemp}°C</p>
+      <p class="min-temp">Min temperature: ${this.generalForecast.dayForecast.minTemp}°C</p>
+      <p class="max-wind">Max wind: ${this.generalForecast.dayForecast.maxWind} kph</p>
     `;
 
     container.insertAdjacentHTML("afterbegin", forecastElement);
@@ -70,11 +73,10 @@ export class ChosenDay {
     `;
   }
   displayHours(container) {
-    console.log(this.index);
-    const currTime = new Date().getHours();
     container.innerHTML = "";
+    const currHours = new Date().getHours();
     this.hoursList.forEach((hour) => {
-      const isPast = Number(this.index) === 0 && currTime > hour.currHour;
+      const isPast = this.isToday && currHours > hour.currHour;
       const hourElement = this.#createHourElement(hour, isPast);
       container.insertAdjacentHTML("beforeend", hourElement);
     });

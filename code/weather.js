@@ -87,7 +87,7 @@ class WeatherApp {
     this.#daysList.displayDays(daysContainer);
   }
   #displayChosenDay() {
-    this.#chosenDay.displayForecast(forecastOverviewContainer);
+    this.#chosenDay.displayGeneralForecast(forecastOverviewContainer);
     this.#chosenDay.displayHours(hoursContainer);
   }
   #displayError(error) {
@@ -131,8 +131,8 @@ class WeatherApp {
       forecastOverviewContainer.innerHTML = "";
       hoursContainer.innerHTML = "";
 
-      this.#chosenDay.setChosenDay(this.#weather[this.#currDay]);
-      this.#chosenDay.index = this.#currDay;
+      this.#chosenDay.setChosenDayVariables(this.#weather[this.#currDay]);
+      this.#chosenDay.isThisDayToday(this.#currDay);
       this.#displayChosenDay();
     }
   }
