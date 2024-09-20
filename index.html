@@ -20,16 +20,19 @@
   </head>
   <body>
     <header>
-      <div class="region">
-        <h1 class="region-name"></h1>
-        <form class="form">
-          <input
-            class="region-input"
-            type="text"
-            placeholder="Enter your region"
-          />
-          <button class="region-btn"><img src="images/search.svg" /></button>
-        </form>
+      <h1 class="region-name"></h1>
+      <form class="form">
+        <input
+          class="region-input"
+          type="text"
+          placeholder="Enter your region"
+        />
+        <button class="region-btn"><img src="images/search.svg" /></button>
+      </form>
+      <div class="error hidden none">
+        <h4>Something went wrong <span class="cross">&#10060;</span></h4>
+        <p class="error-message"></p>
+        <button class="error-btn">Ok</button>
       </div>
     </header>
     <main>
@@ -39,12 +42,6 @@
         <ul class="hours-container"></ul>
       </div>
     </main>
-    <div class="error hidden none">
-      <h4>Something went wrong <span class="cross">&#10060;</span></h4>
-      <p class="error-message"></p>
-      <button class="error-btn">Ok</button>
-    </div>
-
     <!-- temp
     <div id="map"></div> -->
   </body>

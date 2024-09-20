@@ -12,32 +12,21 @@ input {
   box-sizing: border-box;
   color: black;
   background-color: white;
-  width: 35rem;
-  height: 1.85rem;
-  font-size: 1.05rem;
-  border-radius: 0.7rem;
-  padding: 0.2rem;
-  transition: 0.2s;
+}
+
+button {
+  all: unset;
+  background-color: white;
 }
 
 input:focus,
-input:hover {
+input:hover,
+button:hover {
   background-color: rgb(241, 241, 241);
 }
 
-form {
-  display: flex;
-  align-items: end;
-  gap: 0.2rem;
-}
-
 header {
-  height: 5rem;
-}
-
-.region {
-  height: 50%;
-  margin-top: 3rem;
+  height: 5.5rem;
   display: flex;
   justify-content: center;
 }
@@ -48,87 +37,34 @@ header {
   top: 0.1rem;
 }
 
+form {
+  display: flex;
+  align-items: end;
+  gap: 0.2rem;
+}
+
+.region-input {
+  width: 35rem;
+  height: 1.85rem;
+  font-size: 1.05rem;
+  border-radius: 0.7rem;
+  padding: 0.2rem;
+  transition: 0.2s;
+}
+
 .region-btn {
-  all: unset;
   height: 1.85rem;
   width: 1.85rem;
   border-radius: 0.7rem;
-  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: 0.2s;
 }
 
-.region-btn:hover {
-  background-color: rgb(241, 241, 241);
-}
-
 .region-btn img {
   width: 70%;
   height: 70%;
-}
-
-.days-container {
-  display: flex;
-  padding: 0;
-  height: 10rem;
-  justify-content: center;
-  gap: 0.3rem;
-}
-
-.hours-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  justify-content: center;
-  padding: 0;
-  margin-bottom: 1rem;
-}
-
-.day {
-  text-align: center;
-  width: 5rem;
-  height: 8rem;
-  border: 2px solid white;
-  border-radius: 1rem;
-  transition: 0.2s;
-}
-
-.today-forecast-container {
-  width: 90rem;
-  min-height: 40rem;
-  padding: 0.5rem;
-  margin: 1rem auto;
-  border: 2px solid white;
-  border-radius: 1rem;
-}
-
-.forecast-overview {
-  margin-bottom: 1.5rem;
-  font-size: 1.3rem;
-}
-
-.hour {
-  width: 9.5rem;
-  height: 10rem;
-  border: 2px solid white;
-  padding: 0.2rem;
-  border-radius: 1rem;
-}
-
-.hour .curr-hour {
-  font-size: 1.1rem;
-  text-align: center;
-}
-
-.hour img {
-  display: block;
-  margin: 0 auto;
-}
-
-.chosen {
-  border: 2px solid rgb(255, 247, 5);
 }
 
 .error {
@@ -148,17 +84,80 @@ header {
 .error-btn {
   width: 3rem;
   height: 1.3rem;
-  background-color: white;
   border: 1px solid black;
   border-radius: 0.3rem;
+  text-align: center;
   position: absolute;
   bottom: 0.3rem;
   right: 0.4rem;
   transition: 0.2s;
 }
 
-.error-btn:hover {
-  background-color: rgb(151, 213, 255);
+.cross {
+  font-size: 0.8rem;
+}
+
+.days-container {
+  display: flex;
+  padding: 0;
+  margin-top: 2.5rem;
+  height: 10rem;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.day {
+  width: 5rem;
+  height: 8rem;
+  border: 2px solid white;
+  text-align: center;
+  border-radius: 1rem;
+  transition: 0.2s;
+}
+
+.today-forecast-container {
+  width: 90rem;
+  min-height: 40rem;
+  padding: 0.5rem;
+  margin: 1rem auto;
+  border: 2px solid white;
+  border-radius: 1rem;
+}
+
+.forecast-overview {
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.hours-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.hour {
+  width: 9.5rem;
+  height: 10rem;
+  border: 2px solid white;
+  padding: 0.2rem;
+  border-radius: 1rem;
+}
+
+.curr-hour {
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.hour img {
+  display: block;
+  margin: 0 auto;
+}
+
+.chosen {
+  border: 2px solid rgb(255, 247, 5);
 }
 
 .none {
@@ -180,10 +179,6 @@ header {
 .past {
   border: 2px solid rgb(200, 200, 200);
   color: rgb(200, 200, 200);
-}
-
-.cross {
-  font-size: 0.8rem;
 }
 
 @keyframes descent {
