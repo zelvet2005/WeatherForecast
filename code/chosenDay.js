@@ -1,11 +1,11 @@
 export class ChosenDay {
+  isToday = true;
+
   generalForecast;
   hoursList;
-  isToday;
 
-  constructor(chosenDay, index) {
+  constructor(chosenDay) {
     this.setChosenDayVariables(chosenDay);
-    this.isThisDayToday(index);
   }
 
   isThisDayToday(index) {

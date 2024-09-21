@@ -1,11 +1,11 @@
 import { DaysList } from "./daysList.js";
 import { ChosenDay } from "./chosenDay.js";
 
+const regionName = document.querySelector(".region-name");
+const errorContainer = document.querySelector(".error");
 const daysContainer = document.querySelector(".days-container");
 const forecastOverviewContainer = document.querySelector(".forecast-overview");
 const hoursContainer = document.querySelector(".hours-container");
-const regionContainer = document.querySelector(".region-name");
-const errorContainer = document.querySelector(".error");
 const errorMessage = document.querySelector(".error-message");
 const errorBtn = document.querySelector(".error-btn");
 const form = document.querySelector(".form");
@@ -49,7 +49,7 @@ class WeatherApp {
     const { name, country } = weatherObj.location;
     this.#region = `${name}, ${country}`;
     this.#weather = weatherObj.forecast.forecastday;
-    this.#chosenDay = new ChosenDay(this.#weather[0], 0);
+    this.#chosenDay = new ChosenDay(this.#weather[0]);
     this.#daysList = new DaysList(this.#weather);
   }
   #updateUI() {
@@ -81,7 +81,7 @@ class WeatherApp {
     });
   }
   #displayRegion() {
-    regionContainer.textContent = this.#region;
+    regionName.textContent = this.#region;
   }
   #displayDaysList() {
     this.#daysList.displayDays(daysContainer);
@@ -99,9 +99,12 @@ class WeatherApp {
   async #changeRegionHandler(event) {
     event.preventDefault();
     this.#closeErrorWindowHandler();
+
     const cityName = regionInput.value;
+
     regionInput.value = "";
     regionInput.blur();
+
     try {
       const responseWeather = await (
         await fetch(
@@ -110,7 +113,9 @@ class WeatherApp {
           }&q=${cityName}&days=${this.#daysQuantity}`
         )
       ).json();
+
       if (responseWeather.error) throw new Error("Invalid city name");
+
       this.#setWeatherVariables(responseWeather);
       this.#updateUI();
       this.#currDay = 0;
@@ -120,6 +125,7 @@ class WeatherApp {
   }
   #changeChosenDayHandler(event) {
     this.#closeErrorWindowHandler();
+
     const clickedDay = event.target.closest(".day");
     if (clickedDay && !clickedDay.classList.contains("chosen")) {
       daysContainer
