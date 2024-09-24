@@ -1,11 +1,13 @@
 import { DaysList } from "./daysList.js";
 import { ChosenDay } from "./chosenDay.js";
+import { WeatherMap } from "./weatherMap.js";
 
 const regionName = document.querySelector(".region-name");
 const errorContainer = document.querySelector(".error");
 const daysContainer = document.querySelector(".days-container");
 const forecastOverviewContainer = document.querySelector(".forecast-overview");
 const hoursContainer = document.querySelector(".hours-container");
+const mapContainer = document.querySelector("#map");
 const errorMessage = document.querySelector(".error-message");
 const errorBtn = document.querySelector(".error-btn");
 const form = document.querySelector(".form");
@@ -20,6 +22,7 @@ class WeatherApp {
   #region;
   #daysList;
   #chosenDay;
+  #weatherMap;
 
   constructor() {
     this.#getData().then(() => {
@@ -38,6 +41,7 @@ class WeatherApp {
     try {
       const position = await this.#getCurrentGeolocation();
       const responseWeather = await this.#getForecastByGeolocation(position);
+      this.#weatherMap = new WeatherMap(position, mapContainer);
       if (!responseWeather.ok) throw new Error("Fail to load weather forecast");
       const weather = await responseWeather.json();
       this.#setWeatherVariables(weather);
@@ -149,47 +153,3 @@ class WeatherApp {
 }
 
 const app = new WeatherApp();
-
-// const map = L.map("map").setView([50, 30], 6);
-
-// L.tileLayer(
-//   "https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.{ext}",
-//   {
-//     minZoom: 0,
-//     maxZoom: 20,
-//     attribution:
-//       '&copy; CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver (Contains Copernicus Data) | &copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-//     ext: "jpg",
-//   }
-// ).addTo(map);
-
-// L.marker([50, 30]).addTo(map).openPopup();
-
-// const apiKey = "ee684e18c13cf1eae5220ab06846dfbb"; // OpenWeatherMap API key
-
-// const temperatureLayer = L.tileLayer(
-//   `https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${apiKey}`,
-//   {
-//     attribution:
-//       '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
-//     opacity: 1,
-//   }
-// );
-
-// const cloudsLayer = L.tileLayer(
-//   `https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${apiKey}`,
-//   {
-//     attribution:
-//       '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
-//     opacity: 1,
-//   }
-// );
-
-// const precipitationLayer = L.tileLayer(
-//   `https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${apiKey}`,
-//   {
-//     attribution:
-//       '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
-//     opacity: 1,
-//   }
-// );

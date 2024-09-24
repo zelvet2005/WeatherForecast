@@ -22,7 +22,7 @@ button {
 input:focus,
 input:hover,
 button:hover {
-  background-color: rgb(241, 241, 241);
+  background-color: rgb(240, 240, 240);
 }
 
 header {
@@ -115,6 +115,10 @@ form {
   transition: 0.2s;
 }
 
+.day:not(.chosen):hover {
+  border: 2px solid rgb(218, 218, 218);
+}
+
 .today-forecast-container {
   width: 90rem;
   min-height: 40rem;
@@ -179,6 +183,15 @@ form {
   border-radius: 1rem;
   background: none;
   font-size: 1.1rem;
+  transition: 0.2s;
+}
+
+.map-btn:hover {
+  background: none;
+}
+
+.map-btn:not(.chosen):hover {
+  border: 2px solid rgb(218, 218, 218);
 }
 
 .chosen {
