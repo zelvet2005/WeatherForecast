@@ -1,15 +1,55 @@
 export class WeatherMap {
   #apiKey = "ee684e18c13cf1eae5220ab06846dfbb";
   #scale = 9;
+  #currLayer = 0;
 
+  #temperatureLayer = L.tileLayer(
+    `https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${
+      this.#apiKey
+    }`,
+    {
+      attribution:
+        '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
+      opacity: 1,
+    }
+  );
+  #cloudsLayer = L.tileLayer(
+    `https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${
+      this.#apiKey
+    }`,
+    {
+      attribution:
+        '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
+      opacity: 1,
+    }
+  );
+  #precipitationLayer = L.tileLayer(
+    `https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${
+      this.#apiKey
+    }`,
+    {
+      attribution:
+        '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
+      opacity: 1,
+    }
+  );
+  #layers = [
+    this.#precipitationLayer,
+    this.#cloudsLayer,
+    this.#temperatureLayer,
+  ];
+
+  #currMarker;
   map;
 
   constructor(position, mapContainer) {
     const { latitude, longitude } = position.coords;
     this.map = L.map(mapContainer).setView([latitude, longitude], this.#scale);
+    this.#layers[0].addTo(this.map);
+    this.#currMarker = L.marker([latitude, longitude]);
 
     this.#setBasicMapLayer();
-    this.#setMarker(latitude, longitude);
+    this.setMarker(latitude, longitude);
   }
 
   #setBasicMapLayer() {
@@ -24,34 +64,17 @@ export class WeatherMap {
       }
     ).addTo(this.map);
   }
-  #setMarker(latitude, longitude) {
-    L.marker([latitude, longitude]).addTo(this.map).openPopup();
+  setMarker(latitude, longitude) {
+    this.map.removeLayer(this.#currMarker);
+    this.#currMarker = L.marker([latitude, longitude]);
+    this.#currMarker.addTo(this.map).openPopup();
+  }
+  setView(latitude, longitude) {
+    this.map.setView([latitude, longitude], this.#scale);
+  }
+  changeLayer(index) {
+    this.map.removeLayer(this.#layers[this.#currLayer]);
+    this.#layers[index].addTo(this.map);
+    this.#currLayer = index;
   }
 }
-
-// const temperatureLayer = L.tileLayer(
-//    `https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${apiKey}`,
-//    {
-//      attribution:
-//        '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
-//      opacity: 1,
-//    }
-//  );
-
-// const cloudsLayer = L.tileLayer(
-//   `https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${apiKey}`,
-//   {
-//     attribution:
-//       '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
-//     opacity: 1,
-//   }
-// );
-
-// const precipitationLayer = L.tileLayer(
-//   `https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${apiKey}`,
-//   {
-//     attribution:
-//       '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
-//     opacity: 1,
-//   }
-// );

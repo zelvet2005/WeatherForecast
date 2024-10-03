@@ -8,6 +8,7 @@ const daysContainer = document.querySelector(".days-container");
 const forecastOverviewContainer = document.querySelector(".forecast-overview");
 const hoursContainer = document.querySelector(".hours-container");
 const mapContainer = document.querySelector("#map");
+const mapBtns = document.querySelector(".map-type");
 const errorMessage = document.querySelector(".error-message");
 const errorBtn = document.querySelector(".error-btn");
 const form = document.querySelector(".form");
@@ -17,6 +18,7 @@ class WeatherApp {
   #apiKey = "0ddba79c202945448d9175312240308";
   #daysQuantity = 3;
   #currDay = 0;
+  #currLayer = 0;
 
   #weather;
   #region;
@@ -34,6 +36,7 @@ class WeatherApp {
       );
       form.addEventListener("submit", this.#changeRegionHandler.bind(this));
       errorBtn.addEventListener("click", this.#closeErrorWindowHandler);
+      mapBtns.addEventListener("click", this.#changeMapLayerHandler.bind(this));
     });
   }
 
@@ -120,6 +123,10 @@ class WeatherApp {
 
       if (responseWeather.error) throw new Error("Invalid city name");
 
+      const { lat, lon } = responseWeather.location;
+      this.#weatherMap.setView(lat, lon);
+      this.#weatherMap.setMarker(lat, lon);
+
       this.#setWeatherVariables(responseWeather);
       this.#updateUI();
       this.#currDay = 0;
@@ -149,6 +156,22 @@ class WeatherApp {
   #closeErrorWindowHandler() {
     errorContainer.classList.remove("not-hidden");
     errorContainer.classList.add("hidden");
+  }
+  #changeMapLayerHandler(event) {
+    const clicked = event.target;
+
+    if (
+      clicked.classList.contains("map-btn") &&
+      !clicked.classList.contains("chosen")
+    ) {
+      document
+        .querySelector(`[data-layer="${this.#currLayer}"]`)
+        .classList.remove("chosen");
+      clicked.classList.add("chosen");
+      this.#currLayer = clicked.dataset.layer;
+
+      this.#weatherMap.changeLayer(this.#currLayer);
+    }
   }
 }
 
