@@ -7,6 +7,7 @@ const errorContainer = document.querySelector(".error");
 const daysContainer = document.querySelector(".days-container");
 const forecastOverviewContainer = document.querySelector(".forecast-overview");
 const hoursContainer = document.querySelector(".hours-container");
+const weatherMapContainer = document.querySelector(".weather-map");
 const mapContainer = document.querySelector("#map");
 const mapBtns = document.querySelector(".map-type");
 const errorMessage = document.querySelector(".error-message");
@@ -144,6 +145,12 @@ class WeatherApp {
         .classList.remove("chosen");
       clickedDay.classList.add("chosen");
       this.#currDay = clickedDay.dataset.number;
+
+      if (+this.#currDay === 0) {
+        weatherMapContainer.classList.remove("none");
+      } else {
+        weatherMapContainer.classList.add("none");
+      }
 
       forecastOverviewContainer.innerHTML = "";
       hoursContainer.innerHTML = "";
