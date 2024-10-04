@@ -54,7 +54,7 @@ export class WeatherMap {
 
   #setBasicMapLayer() {
     L.tileLayer(
-      "https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.{ext}",
+      "https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.{ext}?api_key=cd4d72d8-da11-4901-b7f6-aa8199d5303f",
       {
         minZoom: 0,
         maxZoom: 20,
