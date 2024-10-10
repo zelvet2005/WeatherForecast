@@ -1,8 +1,10 @@
+const mapContainer = document.querySelector("#map");
+const mapBtns = document.querySelector(".map-type");
+
 export class WeatherMap {
   #apiKey = "ee684e18c13cf1eae5220ab06846dfbb";
   #scale = 9;
-  #currLayer = 0;
-
+  #currWeatherLayer = 0;
   #temperatureLayer = L.tileLayer(
     `https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${
       this.#apiKey
@@ -33,25 +35,34 @@ export class WeatherMap {
       opacity: 1,
     }
   );
-  #layers = [
+  #weatherLayers = [
     this.#precipitationLayer,
     this.#cloudsLayer,
     this.#temperatureLayer,
   ];
-
   #currMarker;
   map;
 
-  constructor(position, mapContainer) {
+  constructor(position) {
     const { latitude, longitude } = position.coords;
     this.map = L.map(mapContainer).setView([latitude, longitude], this.#scale);
-    this.#layers[0].addTo(this.map);
     this.#currMarker = L.marker([latitude, longitude]);
 
     this.#setBasicMapLayer();
-    this.setMarker(latitude, longitude);
+    this.#currMarker.addTo(this.map);
+    this.#precipitationLayer.addTo(this.map);
+
+    mapBtns.addEventListener("click", this.#changeMapLayerHandler.bind(this));
   }
 
+  setMarker(latitude, longitude) {
+    this.map.removeLayer(this.#currMarker);
+    this.#currMarker = L.marker([latitude, longitude]);
+    this.#currMarker.addTo(this.map);
+  }
+  setView(latitude, longitude) {
+    this.map.setView([latitude, longitude], this.#scale);
+  }
   #setBasicMapLayer() {
     L.tileLayer(
       "https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.{ext}?api_key=cd4d72d8-da11-4901-b7f6-aa8199d5303f",
@@ -64,17 +75,25 @@ export class WeatherMap {
       }
     ).addTo(this.map);
   }
-  setMarker(latitude, longitude) {
-    this.map.removeLayer(this.#currMarker);
-    this.#currMarker = L.marker([latitude, longitude]);
-    this.#currMarker.addTo(this.map).openPopup();
+  #changeLayer(indexOfNewLayer) {
+    this.map.removeLayer(this.#weatherLayers[this.#currWeatherLayer]);
+    this.#weatherLayers[indexOfNewLayer].addTo(this.map);
+    this.#currWeatherLayer = indexOfNewLayer;
   }
-  setView(latitude, longitude) {
-    this.map.setView([latitude, longitude], this.#scale);
-  }
-  changeLayer(index) {
-    this.map.removeLayer(this.#layers[this.#currLayer]);
-    this.#layers[index].addTo(this.map);
-    this.#currLayer = index;
+  #changeMapLayerHandler(event) {
+    const clickedElement = event.target;
+
+    if (
+      clickedElement.classList.contains("map-btn") &&
+      !clickedElement.classList.contains("chosen")
+    ) {
+      document
+        .querySelector(`[data-layer="${this.#currWeatherLayer}"]`)
+        .classList.remove("chosen");
+      clickedElement.classList.add("chosen");
+
+      const newLayer = clickedElement.dataset.layer;
+      this.#changeLayer(newLayer);
+    }
   }
 }

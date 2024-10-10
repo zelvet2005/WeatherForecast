@@ -1,15 +1,8 @@
-import { DaysList } from "./daysList.js";
-import { ChosenDay } from "./chosenDay.js";
+import { WeatherForecast } from "./weatherForecast.js";
 import { WeatherMap } from "./weatherMap.js";
 
 const regionName = document.querySelector(".region-name");
 const errorContainer = document.querySelector(".error");
-const daysContainer = document.querySelector(".days-container");
-const forecastOverviewContainer = document.querySelector(".forecast-overview");
-const hoursContainer = document.querySelector(".hours-container");
-const weatherMapContainer = document.querySelector(".weather-map");
-const mapContainer = document.querySelector("#map");
-const mapBtns = document.querySelector(".map-type");
 const errorMessage = document.querySelector(".error-message");
 const errorBtn = document.querySelector(".error-btn");
 const form = document.querySelector(".form");
@@ -18,68 +11,51 @@ const regionInput = document.querySelector(".region-input");
 class WeatherApp {
   #apiKey = "0ddba79c202945448d9175312240308";
   #daysQuantity = 3;
-  #currDay = 0;
-  #currLayer = 0;
-
   #weather;
   #region;
-  #daysList;
-  #chosenDay;
+  #weatherForecast;
   #weatherMap;
 
   constructor() {
     this.#getData().then(() => {
       this.#updateUI();
 
-      daysContainer.addEventListener(
-        "click",
-        this.#changeChosenDayHandler.bind(this)
-      );
       form.addEventListener("submit", this.#changeRegionHandler.bind(this));
       errorBtn.addEventListener("click", this.#closeErrorWindowHandler);
-      mapBtns.addEventListener("click", this.#changeMapLayerHandler.bind(this));
     });
   }
 
   async #getData() {
     try {
       const position = await this.#getCurrentGeolocation();
-      const responseWeather = await this.#getForecastByGeolocation(position);
-      this.#weatherMap = new WeatherMap(position, mapContainer);
-      if (!responseWeather.ok) throw new Error("Fail to load weather forecast");
-      const weather = await responseWeather.json();
-      this.#setWeatherVariables(weather);
+      const responseWeather = await (
+        await this.#getForecastByGeolocation(position)
+      ).json();
+
+      if (responseWeather.error)
+        throw new Error("Fail to load weather forecast");
+
+      this.#weatherMap = new WeatherMap(position);
+      this.#weatherForecast = new WeatherForecast(
+        responseWeather.forecast.forecastday
+      );
+      this.#setWeatherVariables(responseWeather);
     } catch (error) {
       this.#displayError(error);
     }
-  }
-  #setWeatherVariables(weatherObj) {
-    const { name, country } = weatherObj.location;
-    this.#region = `${name}, ${country}`;
-    this.#weather = weatherObj.forecast.forecastday;
-    this.#chosenDay = new ChosenDay(this.#weather[0]);
-    this.#daysList = new DaysList(this.#weather);
-  }
-  #updateUI() {
-    this.#displayRegion();
-    this.#displayDaysList();
-    this.#displayChosenDay();
   }
   #getCurrentGeolocation() {
     return new Promise(function (resolve, reject) {
       if (!navigator.geolocation)
         reject(new Error("Impossible to load geolocation"));
-
       navigator.geolocation.getCurrentPosition(resolve, reject);
     });
   }
   #getForecastByGeolocation(position) {
     const self = this;
-    return new Promise(function (resolve, reject) {
-      if (!position) reject(new Error("Geolocation is undefined"));
-
-      const { latitude, longitude } = position.coords;
-      const geolocation = `${latitude},${longitude}`;
+    const { latitude, longitude } = position.coords;
+    const geolocation = `${latitude},${longitude}`;
+    return new Promise(function (resolve) {
       const response = fetch(
         `https://api.weatherapi.com/v1/forecast.json?key=${
           self.#apiKey
@@ -88,19 +64,32 @@ class WeatherApp {
       resolve(response);
     });
   }
+  #getForecastByCityName(cityName) {
+    const self = this;
+    return new Promise(function (resolve) {
+      const response = fetch(
+        `https://api.weatherapi.com/v1/forecast.json?key=${
+          self.#apiKey
+        }&q=${cityName}&days=${self.#daysQuantity}`
+      );
+      resolve(response);
+    });
+  }
+  #setWeatherVariables(weatherObj) {
+    const { name, country } = weatherObj.location;
+    this.#region = `${name}, ${country}`;
+    this.#weather = weatherObj.forecast.forecastday;
+  }
+  #updateUI() {
+    this.#displayRegion();
+    this.#weatherForecast.displayWeatherForecast();
+  }
   #displayRegion() {
     regionName.textContent = this.#region;
   }
-  #displayDaysList() {
-    this.#daysList.displayDays(daysContainer);
-  }
-  #displayChosenDay() {
-    this.#chosenDay.displayGeneralForecast(forecastOverviewContainer);
-    this.#chosenDay.displayHours(hoursContainer);
-  }
   #displayError(error) {
     errorMessage.textContent = error.message;
-    errorContainer.classList.remove("none");
+    errorContainer.classList.remove("none"); // for correct animation
     errorContainer.classList.remove("hidden");
     errorContainer.classList.add("not-hidden");
   }
@@ -109,17 +98,12 @@ class WeatherApp {
     this.#closeErrorWindowHandler();
 
     const cityName = regionInput.value;
-
     regionInput.value = "";
     regionInput.blur();
 
     try {
       const responseWeather = await (
-        await fetch(
-          `https://api.weatherapi.com/v1/forecast.json?key=${
-            this.#apiKey
-          }&q=${cityName}&days=${this.#daysQuantity}`
-        )
+        await this.#getForecastByCityName(cityName)
       ).json();
 
       if (responseWeather.error) throw new Error("Invalid city name");
@@ -129,56 +113,15 @@ class WeatherApp {
       this.#weatherMap.setMarker(lat, lon);
 
       this.#setWeatherVariables(responseWeather);
+      this.#weatherForecast.setWeatherForecastVariables(this.#weather);
       this.#updateUI();
-      this.#currDay = 0;
     } catch (error) {
       this.#displayError(error);
-    }
-  }
-  #changeChosenDayHandler(event) {
-    this.#closeErrorWindowHandler();
-
-    const clickedDay = event.target.closest(".day");
-    if (clickedDay && !clickedDay.classList.contains("chosen")) {
-      daysContainer
-        .querySelector(`[data-number="${this.#currDay}"]`)
-        .classList.remove("chosen");
-      clickedDay.classList.add("chosen");
-      this.#currDay = clickedDay.dataset.number;
-
-      if (+this.#currDay === 0) {
-        weatherMapContainer.classList.remove("none");
-      } else {
-        weatherMapContainer.classList.add("none");
-      }
-
-      forecastOverviewContainer.innerHTML = "";
-      hoursContainer.innerHTML = "";
-
-      this.#chosenDay.setChosenDayVariables(this.#weather[this.#currDay]);
-      this.#chosenDay.isThisDayToday(this.#currDay);
-      this.#displayChosenDay();
     }
   }
   #closeErrorWindowHandler() {
     errorContainer.classList.remove("not-hidden");
     errorContainer.classList.add("hidden");
-  }
-  #changeMapLayerHandler(event) {
-    const clicked = event.target;
-
-    if (
-      clicked.classList.contains("map-btn") &&
-      !clicked.classList.contains("chosen")
-    ) {
-      document
-        .querySelector(`[data-layer="${this.#currLayer}"]`)
-        .classList.remove("chosen");
-      clicked.classList.add("chosen");
-      this.#currLayer = clicked.dataset.layer;
-
-      this.#weatherMap.changeLayer(this.#currLayer);
-    }
   }
 }
 

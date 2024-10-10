@@ -1,19 +1,18 @@
+const forecastOverviewContainer = document.querySelector(".forecast-overview");
+const hoursContainer = document.querySelector(".hours-container");
+
 export class ChosenDay {
   isToday = true;
-
-  generalForecast;
+  forecastOverview;
   hoursList;
 
   constructor(chosenDay) {
     this.setChosenDayVariables(chosenDay);
   }
 
-  isThisDayToday(index) {
-    this.isToday = +index === 0;
-  }
   setChosenDayVariables(chosenDay) {
     const dayForecast = chosenDay.day;
-    this.generalForecast = {
+    this.forecastOverview = {
       astro: {
         sunrise: chosenDay.astro.sunrise,
         sunset: chosenDay.astro.sunset,
@@ -39,28 +38,39 @@ export class ChosenDay {
       };
     });
   }
-  displayGeneralForecast(container) {
-    container.innerHTML = "";
+  setIsToday(indexOfDay) {
+    this.isToday = Number(indexOfDay) === 0;
+  }
+  displayGeneralForecast() {
+    forecastOverviewContainer.innerHTML = "";
+    const { astro, dayForecast } = this.forecastOverview;
     const forecastElement = `
-      <p class="sunrise">Sunrise: ${this.generalForecast.astro.sunrise}</p>
-      <p class="sunset">Sunset: ${this.generalForecast.astro.sunset}</p>
-      <p class="avg-humidity">Average Humidity: ${this.generalForecast.dayForecast.avghumidity} %</p>
-      <p class="condition-text">Condition: ${this.generalForecast.dayForecast.condition}</p>
-      <p class="chance-rain">Daily chance of rain: ${this.generalForecast.dayForecast.dailyChanceOfRain} %</p>
-      <p class="chance-snow">Daily chance of snow: ${this.generalForecast.dayForecast.dailyChanceOfSnow} %</p>
-      <p class="max-temp">Max temperature: ${this.generalForecast.dayForecast.maxTemp}°C</p>
-      <p class="min-temp">Min temperature: ${this.generalForecast.dayForecast.minTemp}°C</p>
-      <p class="max-wind">Max wind: ${this.generalForecast.dayForecast.maxWind} kph</p>
+      <p class="sunrise">Sunrise: ${astro.sunrise}</p>
+      <p class="sunset">Sunset: ${astro.sunset}</p>
+      <p class="avg-humidity">Average Humidity: ${dayForecast.avghumidity} %</p>
+      <p class="condition-text">Condition: ${dayForecast.condition}</p>
+      <p class="chance-rain">Daily chance of rain: ${dayForecast.dailyChanceOfRain} %</p>
+      <p class="chance-snow">Daily chance of snow: ${dayForecast.dailyChanceOfSnow} %</p>
+      <p class="max-temp">Max temperature: ${dayForecast.maxTemp}°C</p>
+      <p class="min-temp">Min temperature: ${dayForecast.minTemp}°C</p>
+      <p class="max-wind">Max wind: ${dayForecast.maxWind} kph</p>
     `;
 
-    container.insertAdjacentHTML("afterbegin", forecastElement);
+    forecastOverviewContainer.insertAdjacentHTML("afterbegin", forecastElement);
+  }
+  displayHours() {
+    hoursContainer.innerHTML = "";
+    const currHour = new Date().getHours();
+    this.hoursList.forEach((hour) => {
+      const isPast = this.isToday && currHour > hour.currHour;
+      const hourElement = this.#createHourElement(hour, isPast);
+      hoursContainer.insertAdjacentHTML("beforeend", hourElement);
+    });
   }
   #createHourElement(hourObj, isPast) {
     return `
       <div class="hour ${isPast ? "past" : ""}">
-        <p class="curr-hour">${
-          hourObj.currHour < 10 ? "0" + hourObj.currHour : hourObj.currHour
-        }:00</p>
+        <p class="curr-hour">${this.#formatHour(hourObj.currHour)}</p>
         <img
           src="${hourObj.condition.icon}"
           alt="${hourObj.condition.text}"
@@ -72,13 +82,7 @@ export class ChosenDay {
       </div>
     `;
   }
-  displayHours(container) {
-    container.innerHTML = "";
-    const currHours = new Date().getHours();
-    this.hoursList.forEach((hour) => {
-      const isPast = this.isToday && currHours > hour.currHour;
-      const hourElement = this.#createHourElement(hour, isPast);
-      container.insertAdjacentHTML("beforeend", hourElement);
-    });
+  #formatHour(hour) {
+    return `${hour < 10 ? "0" + hour : hour}:00`;
   }
 }
