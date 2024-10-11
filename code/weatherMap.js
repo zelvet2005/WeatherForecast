@@ -13,6 +13,7 @@ export class WeatherMap {
       attribution:
         '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
       opacity: 1,
+      noWrap: true,
     }
   );
   #cloudsLayer = L.tileLayer(
@@ -23,6 +24,7 @@ export class WeatherMap {
       attribution:
         '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
       opacity: 1,
+      noWrap: true,
     }
   );
   #precipitationLayer = L.tileLayer(
@@ -33,6 +35,7 @@ export class WeatherMap {
       attribution:
         '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
       opacity: 1,
+      noWrap: true,
     }
   );
   #weatherLayers = [
@@ -45,7 +48,16 @@ export class WeatherMap {
 
   constructor(position) {
     const { latitude, longitude } = position.coords;
-    this.map = L.map(mapContainer).setView([latitude, longitude], this.#scale);
+    this.map = L.map(mapContainer, {
+      minZoom: 3,
+      maxZoom: 15,
+      maxBounds: [
+        [-85, -180],
+        [85, 180],
+      ],
+      maxBoundsViscosity: 1.0,
+    });
+    this.map.setView([latitude, longitude], this.#scale);
     this.#currMarker = L.marker([latitude, longitude]);
 
     this.#setBasicMapLayer();
@@ -72,6 +84,7 @@ export class WeatherMap {
         attribution:
           '&copy; CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver (Contains Copernicus Data) | &copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         ext: "jpg",
+        noWrap: true,
       }
     ).addTo(this.map);
   }
