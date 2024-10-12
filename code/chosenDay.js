@@ -5,8 +5,10 @@ export class ChosenDay {
   isToday = true;
   forecastOverview;
   hoursList;
+  localTimeHours;
 
-  constructor(chosenDay) {
+  constructor(chosenDay, localTime) {
+    this.setLocalTime(localTime);
     this.setChosenDayVariables(chosenDay);
   }
 
@@ -41,6 +43,10 @@ export class ChosenDay {
   setIsToday(indexOfDay) {
     this.isToday = Number(indexOfDay) === 0;
   }
+  setLocalTime(localTime) {
+    const localTimeWithoutDate = localTime.split(" ")[1];
+    this.localTimeHours = Number(localTimeWithoutDate.split(":")[0]);
+  }
   displayGeneralForecast() {
     forecastOverviewContainer.innerHTML = "";
     const { astro, dayForecast } = this.forecastOverview;
@@ -60,9 +66,8 @@ export class ChosenDay {
   }
   displayHours() {
     hoursContainer.innerHTML = "";
-    const currHour = new Date().getHours();
     this.hoursList.forEach((hour) => {
-      const isPast = this.isToday && currHour > hour.currHour;
+      const isPast = this.isToday && this.localTimeHours > hour.currHour;
       const hourElement = this.#createHourElement(hour, isPast);
       hoursContainer.insertAdjacentHTML("beforeend", hourElement);
     });

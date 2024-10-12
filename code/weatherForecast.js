@@ -10,10 +10,13 @@ export class WeatherForecast {
   daysList;
   chosenDayIndex;
 
-  constructor(weather) {
+  constructor(weather, localTime) {
     this.#weather = weather;
     this.chosenDayIndex = 0;
-    this.#chosenDay = new ChosenDay(this.#weather[this.chosenDayIndex]);
+    this.#chosenDay = new ChosenDay(
+      this.#weather[this.chosenDayIndex],
+      localTime
+    );
 
     this.#setDaysList(this.#weather);
 
@@ -48,6 +51,9 @@ export class WeatherForecast {
         },
       };
     });
+  }
+  setLocalTimeForChosenDay(localTime) {
+    this.#chosenDay.setLocalTime(localTime);
   }
   displayWeatherForecast() {
     this.#displayDays();

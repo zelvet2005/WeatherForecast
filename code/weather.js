@@ -39,7 +39,8 @@ class WeatherApp {
 
       this.#weatherMap = new WeatherMap(position);
       this.#weatherForecast = new WeatherForecast(
-        responseWeather.forecast.forecastday
+        responseWeather.forecast.forecastday,
+        responseWeather.location.localtime
       );
       this.#clothes = new Clothes(responseWeather.forecast.forecastday[0]);
       this.#setWeatherVariables(responseWeather);
@@ -117,6 +118,9 @@ class WeatherApp {
       this.#weatherMap.setMarker(lat, lon);
 
       this.#setWeatherVariables(responseWeather);
+      this.#weatherForecast.setLocalTimeForChosenDay(
+        responseWeather.location.localtime
+      );
       this.#weatherForecast.setWeatherForecastVariables(this.#weather);
 
       this.#clothes.setClothesVariables(
