@@ -2,6 +2,7 @@ import { ChosenDay } from "./chosenDay.js";
 
 const daysContainer = document.querySelector(".days-container");
 const weatherMapContainer = document.querySelector(".weather-map");
+const weatherClothesContainer = document.querySelector(".weather-clothes");
 
 export class WeatherForecast {
   #weather;
@@ -26,9 +27,11 @@ export class WeatherForecast {
     this.#weather = weather;
     this.chosenDayIndex = 0;
     this.#chosenDay.setChosenDayVariables(this.#weather[this.chosenDayIndex]);
+    this.#chosenDay.setIsToday(this.chosenDayIndex);
     this.#setDaysList(this.#weather);
 
     weatherMapContainer.classList.remove("none");
+    weatherClothesContainer.classList.remove("none");
   }
   #setDaysList(daysList) {
     this.daysList = daysList.map((dayForecast) => {
@@ -85,8 +88,10 @@ export class WeatherForecast {
 
       if (Number(this.chosenDayIndex) === 0) {
         weatherMapContainer.classList.remove("none");
+        weatherClothesContainer.classList.remove("none");
       } else {
         weatherMapContainer.classList.add("none");
+        weatherClothesContainer.classList.add("none");
       }
 
       this.#chosenDay.setChosenDayVariables(this.#weather[this.chosenDayIndex]);

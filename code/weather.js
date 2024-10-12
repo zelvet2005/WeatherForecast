@@ -1,3 +1,4 @@
+import { Clothes } from "./weatherClothes.js";
 import { WeatherForecast } from "./weatherForecast.js";
 import { WeatherMap } from "./weatherMap.js";
 
@@ -15,6 +16,7 @@ class WeatherApp {
   #region;
   #weatherForecast;
   #weatherMap;
+  #clothes;
 
   constructor() {
     this.#getData().then(() => {
@@ -39,6 +41,7 @@ class WeatherApp {
       this.#weatherForecast = new WeatherForecast(
         responseWeather.forecast.forecastday
       );
+      this.#clothes = new Clothes(responseWeather.forecast.forecastday[0]);
       this.#setWeatherVariables(responseWeather);
     } catch (error) {
       this.#displayError(error);
@@ -83,6 +86,7 @@ class WeatherApp {
   #updateUI() {
     this.#displayRegion();
     this.#weatherForecast.displayWeatherForecast();
+    this.#clothes.updateClothesUI();
   }
   #displayRegion() {
     regionName.textContent = this.#region;
@@ -114,6 +118,11 @@ class WeatherApp {
 
       this.#setWeatherVariables(responseWeather);
       this.#weatherForecast.setWeatherForecastVariables(this.#weather);
+
+      this.#clothes.setClothesVariables(
+        responseWeather.forecast.forecastday[0]
+      );
+
       this.#updateUI();
     } catch (error) {
       this.#displayError(error);
