@@ -15,6 +15,8 @@ export class Clothes {
     this.#setLocalStorageIfNotExist();
     this.setClothesVariables(currWeather);
     this.updateClothesUI();
+
+    askBtn.addEventListener("click", this.#addClothesToMapHandler.bind(this));
   }
 
   #getClothesFromLocalStorage() {
@@ -49,7 +51,6 @@ export class Clothes {
     if (this.#clothes.has(this.#currConditions)) {
       this.#displayRecommendedClothes(this.#currConditions);
     } else {
-      askBtn.addEventListener("click", this.#addClothesToMapHandler.bind(this));
       this.#displayAskClothes();
     }
   }
@@ -71,6 +72,7 @@ export class Clothes {
 
     const clothes = askInput.value;
     this.#makeConditionsForClothes(clothes);
+    console.log(clothes);
     localStorage.setItem(
       this.#clothesKeyLS,
       this.#formatMapForLocalStorage(this.#clothes)
