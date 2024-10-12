@@ -39,14 +39,6 @@ export class Clothes {
     const formattedPrecip = precip.toFixed(1) === "0.0" ? 0 : precip.toFixed(1);
     this.#currConditions = `${formattedTemp}/${formattedPrecip}`;
   }
-  #makeConditionsForClothes(clothes) {
-    const [temp, precip] = this.#currConditions.split("/");
-    this.#clothes.set(`${Number(temp) + 1}/${precip}`, clothes);
-    this.#clothes.set(`${temp - 1}/${precip}`, clothes);
-    this.#clothes.set(`${temp}/${precip}`, clothes);
-    this.#clothes.set(`${temp}/${Number(precip) + 0.1}`, clothes);
-    if (precip >= 0.1) this.#clothes.set(`${temp}/${precip - 0.1}`, clothes);
-  }
   updateClothesUI() {
     if (this.#clothes.has(this.#currConditions)) {
       this.#displayRecommendedClothes(this.#currConditions);
@@ -64,6 +56,14 @@ export class Clothes {
     recommendedClothesContainer.classList.add("none");
     askClothesContainer.classList.remove("none");
   }
+  #makeConditionsForClothes(clothes) {
+    const [temp, precip] = this.#currConditions.split("/");
+    this.#clothes.set(`${Number(temp) + 1}/${precip}`, clothes);
+    this.#clothes.set(`${temp - 1}/${precip}`, clothes);
+    this.#clothes.set(`${temp}/${precip}`, clothes);
+    this.#clothes.set(`${temp}/${Number(precip) + 0.1}`, clothes);
+    if (precip >= 0.1) this.#clothes.set(`${temp}/${precip - 0.1}`, clothes);
+  }
   #formatMapForLocalStorage(map) {
     return JSON.stringify(Array.from(map));
   }
@@ -71,15 +71,16 @@ export class Clothes {
     event.preventDefault();
 
     const clothes = askInput.value;
-    this.#makeConditionsForClothes(clothes);
-    console.log(clothes);
-    localStorage.setItem(
-      this.#clothesKeyLS,
-      this.#formatMapForLocalStorage(this.#clothes)
-    );
-    this.#displayRecommendedClothes(this.#currConditions);
+    if (clothes && clothes.trim() !== "") {
+      this.#makeConditionsForClothes(clothes);
+      localStorage.setItem(
+        this.#clothesKeyLS,
+        this.#formatMapForLocalStorage(this.#clothes)
+      );
+      this.#displayRecommendedClothes(this.#currConditions);
 
-    askInput.value = "";
-    askInput.blur();
+      askInput.value = "";
+      askInput.blur();
+    }
   }
 }
