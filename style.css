@@ -145,7 +145,7 @@ form {
 
 .hour {
   width: 9.5rem;
-  height: 10rem;
+  min-height: 10rem;
   border: 2px solid white;
   padding: 0.2rem;
   border-radius: 1rem;
