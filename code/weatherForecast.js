@@ -10,15 +10,19 @@ export class WeatherForecast {
   daysList;
   chosenDayIndex;
 
-  constructor(weather, localTime) {
-    this.#weather = weather;
-    this.chosenDayIndex = 0;
-    this.#chosenDay = new ChosenDay(
-      this.#weather[this.chosenDayIndex],
-      localTime
-    );
+  constructor(weather = null, localTime = null) {
+    if (weather) {
+      this.#weather = weather;
+      this.chosenDayIndex = 0;
+      this.#chosenDay = new ChosenDay(
+        this.#weather[this.chosenDayIndex],
+        localTime
+      );
 
-    this.#setDaysList(this.#weather);
+      this.#setDaysList(this.#weather);
+    } else {
+      this.#chosenDay = new ChosenDay();
+    }
 
     daysContainer.addEventListener(
       "click",

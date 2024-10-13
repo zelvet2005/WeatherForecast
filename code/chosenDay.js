@@ -7,9 +7,11 @@ export class ChosenDay {
   hoursList;
   localTimeHours;
 
-  constructor(chosenDay, localTime) {
-    this.setLocalTime(localTime);
-    this.setChosenDayVariables(chosenDay);
+  constructor(chosenDay = null, localTime) {
+    if (chosenDay) {
+      this.setLocalTime(localTime);
+      this.setChosenDayVariables(chosenDay);
+    }
   }
 
   setChosenDayVariables(chosenDay) {

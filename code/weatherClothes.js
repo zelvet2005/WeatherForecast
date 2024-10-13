@@ -11,10 +11,12 @@ export class Clothes {
   #clothes;
   #currConditions;
 
-  constructor(currWeather) {
+  constructor(currWeather = null) {
     this.#setLocalStorageIfNotExist();
-    this.setClothesVariables(currWeather);
-    this.updateClothesUI();
+    if (currWeather) {
+      this.setClothesVariables(currWeather);
+      this.updateClothesUI();
+    }
 
     askBtn.addEventListener("click", this.#addClothesToMapHandler.bind(this));
   }

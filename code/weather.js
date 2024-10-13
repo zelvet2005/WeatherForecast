@@ -19,12 +19,17 @@ class WeatherApp {
   #clothes;
 
   constructor() {
-    this.#getData().then(() => {
-      this.#updateUI();
-
-      form.addEventListener("submit", this.#changeRegionHandler.bind(this));
-      errorBtn.addEventListener("click", this.#closeErrorWindowHandler);
-    });
+    this.#getData()
+      .then(() => {
+        this.#updateUI();
+      })
+      .catch(() => {
+        this.#weatherForecast = new WeatherForecast();
+        this.#weatherMap = new WeatherMap();
+        this.#clothes = new Clothes();
+      });
+    form.addEventListener("submit", this.#changeRegionHandler.bind(this));
+    errorBtn.addEventListener("click", this.#closeErrorWindowHandler);
   }
 
   async #getData() {
@@ -37,7 +42,7 @@ class WeatherApp {
       if (responseWeather.error)
         throw new Error("Fail to load weather forecast");
 
-      this.#weatherMap = new WeatherMap(position);
+      this.#weatherMap = new WeatherMap(position.coords);
       this.#weatherForecast = new WeatherForecast(
         responseWeather.forecast.forecastday,
         responseWeather.location.localtime
@@ -114,8 +119,7 @@ class WeatherApp {
       if (responseWeather.error) throw new Error("Invalid city name");
 
       const { lat, lon } = responseWeather.location;
-      this.#weatherMap.setView(lat, lon);
-      this.#weatherMap.setMarker(lat, lon);
+      this.#weatherMap.setWeatherMapVariables(lat, lon);
 
       this.#setWeatherVariables(responseWeather);
       this.#weatherForecast.setLocalTimeForChosenDay(

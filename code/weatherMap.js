@@ -46,8 +46,14 @@ export class WeatherMap {
   #currMarker;
   map;
 
-  constructor(position) {
-    const { latitude, longitude } = position.coords;
+  constructor(position = null) {
+    if (position) {
+      this.setWeatherMapVariables(position);
+    }
+
+    mapBtns.addEventListener("click", this.#changeMapLayerHandler.bind(this));
+  }
+  setWeatherMapVariables(latitude, longitude) {
     this.map = L.map(mapContainer, {
       minZoom: 3,
       maxZoom: 15,
@@ -63,10 +69,7 @@ export class WeatherMap {
     this.#setBasicMapLayer();
     this.#currMarker.addTo(this.map);
     this.#precipitationLayer.addTo(this.map);
-
-    mapBtns.addEventListener("click", this.#changeMapLayerHandler.bind(this));
   }
-
   setMarker(latitude, longitude) {
     this.map.removeLayer(this.#currMarker);
     this.#currMarker = L.marker([latitude, longitude]);
