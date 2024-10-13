@@ -1,10 +1,10 @@
 const mapContainer = document.querySelector("#map");
-const mapBtns = document.querySelector(".map-type");
+const mapBtnsContainer = document.querySelector(".map-type");
 
 export class WeatherMap {
   #apiKey = "ee684e18c13cf1eae5220ab06846dfbb";
   #scale = 9;
-  #currWeatherLayer = 0;
+  #currWeatherLayer;
   #temperatureLayer = L.tileLayer(
     `https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${
       this.#apiKey
@@ -48,27 +48,41 @@ export class WeatherMap {
 
   constructor(position = null) {
     if (position) {
-      this.setWeatherMapVariables(position);
+      const { latitude, longitude } = position;
+      this.setWeatherMapVariables(latitude, longitude);
     }
 
-    mapBtns.addEventListener("click", this.#changeMapLayerHandler.bind(this));
+    mapBtnsContainer.addEventListener(
+      "click",
+      this.#changeMapLayerHandler.bind(this)
+    );
   }
   setWeatherMapVariables(latitude, longitude) {
-    this.map = L.map(mapContainer, {
-      minZoom: 3,
-      maxZoom: 15,
-      maxBounds: [
-        [-85, -180],
-        [85, 180],
-      ],
-      maxBoundsViscosity: 1.0,
+    if (!this.map) {
+      this.map = L.map(mapContainer, {
+        minZoom: 3,
+        maxZoom: 15,
+        maxBounds: [
+          [-85, -180],
+          [85, 180],
+        ],
+        maxBoundsViscosity: 1.0,
+      });
+    }
+    const weatherMap = this.map;
+    weatherMap.eachLayer(function (layer) {
+      weatherMap.removeLayer(layer);
     });
-    this.map.setView([latitude, longitude], this.#scale);
+    weatherMap.setView([latitude, longitude], this.#scale);
     this.#currMarker = L.marker([latitude, longitude]);
 
     this.#setBasicMapLayer();
-    this.#currMarker.addTo(this.map);
-    this.#precipitationLayer.addTo(this.map);
+    this.#currMarker.addTo(weatherMap);
+    this.#precipitationLayer.addTo(weatherMap);
+    this.#currWeatherLayer = 0;
+
+    mapBtnsContainer.innerHTML = "";
+    mapBtnsContainer.insertAdjacentHTML("beforeend", this.#createLayerBtns());
   }
   setMarker(latitude, longitude) {
     this.map.removeLayer(this.#currMarker);
@@ -95,6 +109,13 @@ export class WeatherMap {
     this.map.removeLayer(this.#weatherLayers[this.#currWeatherLayer]);
     this.#weatherLayers[indexOfNewLayer].addTo(this.map);
     this.#currWeatherLayer = indexOfNewLayer;
+  }
+  #createLayerBtns() {
+    return `
+      <button class="map-btn chosen" data-layer="0">Precipitation</button>
+      <button class="map-btn" data-layer="1">Clouds</button>
+      <button class="map-btn" data-layer="2">Temperature</button>
+    `;
   }
   #changeMapLayerHandler(event) {
     const clickedElement = event.target;
